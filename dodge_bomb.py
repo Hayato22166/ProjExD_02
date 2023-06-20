@@ -3,7 +3,7 @@ import sys
 import pygame as pg
 
 
-WIDTH, HEIGHT = 900, 500
+WIDTH, HEIGHT = 1600, 900
 delta = {
     pg.K_UP:(0, -5),
     pg.K_DOWN:(0, +5),
@@ -36,6 +36,12 @@ def main():
     bm_rct = bm_img.get_rect()
     bm_rct.center = x, y
     vx, vy = +5, +5
+    kk_mv = [(-5,0), (-5,+5), (0,+5), (+5,+5), (+5,0), (+5,-5), (0,-5), (-5,-5)]
+    kk_imgs = []
+    for i in range(8):
+        kk_imgs.append(pg.transform.rotozoom(kk_img, i, 1.0))  
+    kk_dic = dict(zip(kk_mv, kk_imgs))
+    print(kk_dic)
 
     clock = pg.time.Clock()
     tmr = 0
@@ -48,12 +54,16 @@ def main():
         if kk_rct.colliderect(bm_rct):
             print("game over")
             return
+        
         key_list = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, mv in delta.items():
             if key_list[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+        
+            
+            
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
